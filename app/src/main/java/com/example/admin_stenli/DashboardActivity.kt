@@ -17,8 +17,8 @@ class DashboardActivity : AppCompatActivity() {
     private lateinit var etEmailUser: EditText
     private lateinit var btnTambah: ImageButton
     private lateinit var btnLihat: ImageButton
-    private lateinit var btnEdit: ImageButton
-    private lateinit var btnHapus: ImageButton
+    private var btnEdit: ImageButton? = null
+    private var btnHapus: ImageButton? = null
 
     private lateinit var sqLiteHelper: SQLiteHelper
     private lateinit var recyclerView: RecyclerView
@@ -62,6 +62,7 @@ class DashboardActivity : AppCompatActivity() {
         adapter?.tambahItem(userList)
     }
 
+    //Menambahkan data user
     private fun tambahUser() {
         val name = etNamaUser.text.toString()
         val email = etEmailUser.text.toString()
@@ -83,18 +84,20 @@ class DashboardActivity : AppCompatActivity() {
         }
     }
 
-    //mengupdate User
+    //Mengupdate User
     private fun updateUser() {
         val name = etNamaUser.text.toString()
         val email = etEmailUser.text.toString()
 
         //check bahwa data berubah atau tidak
         if (name == user?.name && email == user?.email) {
-            Toast.makeText(this, "Data tidak berubah", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Data tidak mengalami perubahan", Toast.LENGTH_SHORT).show()
             return
         }
 
-        if (user != null) return
+        //if (user != null) return SALAH COYY
+        if (user == null) return
+
         val user = UserModel(id = user!!.id, name = name, email = email)
         val status = sqLiteHelper.editUserById(user)
         if(status > -1) {
@@ -139,13 +142,14 @@ class DashboardActivity : AppCompatActivity() {
     }
 
     private fun initView() {
+        recyclerView = findViewById(R.id.recyclerView)
         etNamaUser = findViewById(R.id.etNamaUser)
         etEmailUser = findViewById(R.id.etEmailUser)
         btnTambah = findViewById(R.id.btnTambah)
         btnLihat = findViewById(R.id.btnLihat)
         btnEdit = findViewById(R.id.btnEdit)
         btnHapus = findViewById(R.id.btnHapus)
-        recyclerView = findViewById(R.id.rvDashboard)
+
     }
 
 }
