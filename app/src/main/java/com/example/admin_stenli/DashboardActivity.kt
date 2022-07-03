@@ -95,12 +95,13 @@ class DashboardActivity : AppCompatActivity() {
             return
         }
 
-        //if (user != null) return SALAH COYY
+        //
         if (user == null) return
 
         val user = UserModel(id = user!!.id, name = name, email = email)
         val status = sqLiteHelper.editUserById(user)
         if(status > -1) {
+            Toast.makeText(this, "Data berhasil terubah", Toast.LENGTH_SHORT).show()
             clearEditText()
             lihatUser()
         } else {
